@@ -1,0 +1,31 @@
+<div class="container">
+
+<div class="jumbotron">
+<h1>MarketWatch - Webscraper</h1>
+</div>
+
+
+
+<div class= "row">
+<div id = "articles">
+	<ul>
+		{{#each savarticles}}
+			{{#if this.saved}}
+		<div class="row">
+			<li>
+			<div class="article">
+				<a href={{this.link}}>{{this.title}}
+				</a>
+				<button type="button" class="btn btn-primary delete" data-id="{{this._id}}">Delete Article</button>
+				<button type="button" class="btn btn-primary Note" data-id="{{this._id}}">Article Notes</button>
+			</div>
+			</li>
+		</div>
+		{{/if}}
+		{{/each}}
+	</ul>
+</div>
+</div>
+
+
+</div>

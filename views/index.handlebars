@@ -1,0 +1,33 @@
+<div class="container">
+
+<div class="jumbotron">
+<h1>MarketWatch - Webscraper</h1>
+</div>
+
+<div class = "row">
+	<button type="button" class="btn btn-danger" id="scrape" href="/scrape">Scrape</button>
+	<button type="button" class="btn btn-primary" id="saved" href="/savedarticles">Saved Articles</button>
+
+</div>
+
+
+<div class= "row">
+<div id = "articles">
+	<ul>
+		{{#each articles}}
+		<div class="row">
+			<li>
+			<div class="article">
+				<a href={{this.link}}>{{this.title}}
+				</a>
+				<button type="button" class="btn btn-primary save" data-id="{{this._id}}">{{#unless this.saved}}Save Article{{/unless}}{{#if this.saved}}Saved Article{{/if}} </button>
+			</div>
+			</li>
+		</div>
+		{{/each}}
+	</ul>
+</div>
+</div>
+
+
+</div>
