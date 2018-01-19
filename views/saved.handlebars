@@ -7,7 +7,7 @@
 
 
 <div class= "row">
-<div id = "articles">
+   <div id = "articles">
 	<ul>
 		{{#each savarticles}}
 			{{#if this.saved}}
@@ -17,15 +17,36 @@
 				<a href={{this.link}}>{{this.title}}
 				</a>
 				<button type="button" class="btn btn-primary delete" data-id="{{this._id}}">Delete Article</button>
-				<button type="button" class="btn btn-primary Note" data-id="{{this._id}}">Article Notes</button>
+				<button type="button" data-toggle="modal" data-target="#create-user" class="btn btn-primary Note" data-id="{{this._id}}">Article Notes</button>
 			</div>
 			</li>
 		</div>
+        <div class="modal fade" id="create-user" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+           <div class="modal-content">
+            <div class="newpackagemodal-container">
+                <div class="modal-header">
+              <h3 class='text-center'>Article Notes</h3>
+                </div>
+                <div class="modal-body">
+              <div class='text-center' id="createNote">
+              <textarea cols="70" id="articleNote"></textarea>
+        </div>
+        <div class="modal-footer">
+              <button type="button" class="btn btn-primary submitNote" data-id={{this.id}}>Submit</button>
+              </div>
+         </div>     
+            </div>
+        </div>
+          </div>
+    </div>
 		{{/if}}
 		{{/each}}
 	</ul>
+   </div>
 </div>
-</div>
+
+    
 
 
 </div>

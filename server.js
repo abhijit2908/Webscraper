@@ -8,7 +8,7 @@ var exphbs = require("express-handlebars");
 var db = require('./models');
 // var Promise = require('bluebird');
 var app = express();
-
+var router = express.Router();
 // var Article = ("./models/Article");
 // var Note = ("./models/Note");
 var PORT = process.env.PORT || 3000;
@@ -28,7 +28,7 @@ mongoose.connect('mongodb://localhost/webscraper',{
 });
 
 
-app.get("/scrape",function(req,res){
+app.post("/scrape",function(req,res){
 
   request("https://www.marketwatch.com/",function(err,response,html) {
 
@@ -53,27 +53,19 @@ app.get("/scrape",function(req,res){
    db.Article
    .create(result)
    .then(function(dbArticle) {
-      //console.log(dbArticle)
+      console.log("scraping done")
       //res.redirect('/articles')
-  })
+    //   var articleObj = {
+    //     articles : dbArticle
+    //   }
+    //   res.render("index",articleObj)
+   })
    .catch(function(err) {
     return res.json(err);
   })
  
  })
-  db.Article.find({
-  }).then(function(dbArticle) {
-      // res.json(dbArticle);
-
-      var articleObj = {
-        articles : dbArticle
-      }
-      res.render("index",articleObj)
-    })
-  .catch(function(err) {
-    res.json(err);
-  });
-
+ 
 })
 
   //res.render("index");
@@ -85,6 +77,45 @@ app.get("/",function(req,res){
 
 
 })
+
+
+app.get("/articles",function(req,res){
+
+   db.Article.find({
+  }).then(function(dbArticle) {
+      // res.json(dbArticle);
+      var articleObj = {
+        articles : dbArticle
+      }
+      res.render("index",articleObj)
+    })
+  .catch(function(err) {
+    res.json(err);
+  });
+
+})
+
+app.post("/articles/:id",function(req,res){
+  console.log(req.body)
+   db.Note
+   .create(req.body)
+   .then(function(dbNote){
+      // res.json(dbArticle);
+      return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
+    }).then(function(dbArticle){
+      res.json(dbArticle);
+    })
+  .catch(function(err) {
+    res.json(err);
+  });
+
+})
+
+
+
+
+
+
 
 
 app.post("/articles/:id",function(req,res){

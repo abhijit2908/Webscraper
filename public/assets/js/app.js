@@ -5,26 +5,29 @@ $('body').on("click","#scrape",function(event){
 
 			$.ajax("/scrape", {
 
-			type:"GET"
+			type:"POST"
 			// data:articleObject
 
-		}).then(
-			function(){
+		}).then(function(){
 				console.log("front end scrape button");
-		// $.ajax("/articles", {
+					
 
-		// 	type:"GET",
-		// 	data:articleObj
+				//console.log("created new burger");
+				
+			});
+		$.ajax("/articles", {
 
-		// }).then(function(){
+							type:"GET",
+		//data:articleObj
+
+		 					}).then(function(){
 		// 	console.log("article Scraped")
 		// })
 
-		})
+											});
 
-				//console.log("created new burger");
-				//location.reload();
-			});
+		location.reload();
+})		
 
 $('body').on("click",".save",function(event){
 
@@ -42,8 +45,9 @@ $('body').on("click",".save",function(event){
 	//console.log(data);
 }).then(function(saved) {
 	//console.log(saved);
-	location.reload();
+	// location.reload();
 })
+location.reload();
 })
 
 $('body').on("click",".delete",function(event){
@@ -64,9 +68,37 @@ $('body').on("click",".delete",function(event){
 
 }).then(function(saved) {
 	//console.log(saved);
-	location.reload()
+	//location.reload()
 
 })
+location.reload()
+})
+
+
+
+$('body').on("click",".submitNote",function(event){
+
+	var articleId = $(this).attr("data-id");
+	var note = $('#articleNote').val();
+	
+	$.ajax("/articles/" + articleId, {
+
+			type:"POST",
+			//url: "/articles/" + articleId,
+			data: {
+				"body":note
+				//articleId : articleId
+			}
+
+	//console.log(data)
+
+
+}).then(function(saved) {
+	//console.log(saved);
+	//location.reload()
+
+})
+location.reload()
 })
 
 
