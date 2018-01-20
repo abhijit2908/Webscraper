@@ -71,17 +71,35 @@ $('body').on("click",".delete",function(event){
 	//location.reload()
 
 })
-location.reload()
+location.reload();
 })
 
 
 
-$('body').on("click",".submitNote",function(event){
 
-	var articleId = $(this).attr("data-id");
+
+
+
+$('#create-user').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) // Button that triggered the modal
+  var articleId = button.data('id')
+
+  //console.log(articleId)
+$("#submitNote").attr("data-id",articleId)
+
+});
+
+
+$('body').on("click","#submitNote",function(event){
+	//$(element).attr('data-id')
+	event.preventDefault();
+	
+	var noteId = $(this).attr("data-id")
+	//console.log(noteId)
+	//console.log(articleId);
 	var note = $('#articleNote').val();
 	
-	$.ajax("/articles/" + articleId, {
+	$.ajax("/createnotes/" + noteId, {
 
 			type:"POST",
 			//url: "/articles/" + articleId,
@@ -93,18 +111,24 @@ $('body').on("click",".submitNote",function(event){
 	//console.log(data)
 
 
-}).then(function(saved) {
+}).done(function(saved) {
 	//console.log(saved);
 	//location.reload()
+	//$("#articleNote").empty();
+	 //$('.modal-header .close').click();
 
 })
-location.reload()
+//location.reload()
 })
 
 
 });
 
+function emptyContent(){
 
+
+	$("#articleNote").val("");
+}
 
 
 

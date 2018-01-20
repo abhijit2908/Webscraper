@@ -4,13 +4,12 @@ var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
 var request = require("request");
 var exphbs = require("express-handlebars");
-//var rp = require('request-promise');
+
 var db = require('./models');
-// var Promise = require('bluebird');
+
 var app = express();
 var router = express.Router();
-// var Article = ("./models/Article");
-// var Note = ("./models/Note");
+
 var PORT = process.env.PORT || 3000;
 
 
@@ -32,7 +31,7 @@ app.post("/scrape",function(req,res){
 
   request("https://www.marketwatch.com/",function(err,response,html) {
 
-  // Load the body of the HTML into cheerio
+
   var $ = cheerio.load(html);
 
 
@@ -44,21 +43,11 @@ app.post("/scrape",function(req,res){
 
     result.link = $(element).children("a").attr("href");
 
-  	// console.log("result title",result.title);
-   //  console.log("result link",result.link);
-
-   //    // var entry = new Article(result);
-
-   //    console.log(result);
+ 
    db.Article
    .create(result)
    .then(function(dbArticle) {
-      console.log("scraping done")
-      //res.redirect('/articles')
-    //   var articleObj = {
-    //     articles : dbArticle
-    //   }
-    //   res.render("index",articleObj)
+
    })
    .catch(function(err) {
     return res.json(err);
@@ -68,7 +57,7 @@ app.post("/scrape",function(req,res){
  
 })
 
-  //res.render("index");
+
 })
 
 app.get("/",function(req,res){
@@ -95,28 +84,6 @@ app.get("/articles",function(req,res){
 
 })
 
-app.post("/articles/:id",function(req,res){
-  console.log(req.body)
-   db.Note
-   .create(req.body)
-   .then(function(dbNote){
-      // res.json(dbArticle);
-      return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
-    }).then(function(dbArticle){
-      res.json(dbArticle);
-    })
-  .catch(function(err) {
-    res.json(err);
-  });
-
-})
-
-
-
-
-
-
-
 
 app.post("/articles/:id",function(req,res){
 console.log(req.body);
@@ -128,19 +95,19 @@ db.Article
       }
       else {
         
-        console.log(edited);
-        //res.send(edited);
+        res.send(edited);
       }
   });
 });
 
 app.get("/savedarticles",function(req,res){
   db.Article.find({saved:true}).then(function(savedArticle) {
-      // res.json(dbArticle);
+     
 
       var savarticleObj = {
         savarticles : savedArticle
       }
+   
       res.render("saved",savarticleObj)
     })
   .catch(function(err) {
@@ -148,20 +115,48 @@ app.get("/savedarticles",function(req,res){
   });
 });
 
+app.get("/createnotes/:id",function(req,res){
+  console.log(req.params.id)
+  db.Article
+ .findOne({ _id: req.params.id })
+   // ..and populate all of the notes associated with it
+   .populate('note')
+   .then(function(dbArticle) {
+     // If we were able to successfully find an Article with the given id, send it back to the client
+     res.json(dbArticle);
 
-// app.get("/savedarticles:id",function(req,res){
-//   db.Article.remove(req.params.id).then(function(savedArticle) {
-//       // res.json(dbArticle);
+         //res.render('saved',dbArticle);
+ })
+   .catch(function(err) {
+     // If an error occurred, send it to the client
+     res.json(err);
+ });
+});
 
-//       var savarticleObj = {
-//         savarticles : savedArticle
-//       }
-//       res.render("saved",savarticleObj)
-//     })
-//   .catch(function(err) {
-//     res.json(err);
-//   });
-// });
+
+
+
+
+
+
+
+app.post("/createnotes/:id",function(req,res){
+  console.log(req.body)
+  console.log(req.params.id)
+   db.Note
+   .create(req.body)
+   .then(function(dbNote){
+     
+      return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
+    }).then(function(dbArticle){
+      console.log("notes",dbArticle)
+      res.json(dbArticle);
+    })
+  .catch(function(err) {
+    res.json(err);
+  });
+
+})
 
 
 
