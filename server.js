@@ -8,7 +8,7 @@ var db = require('./models');
 var app = express();
 var router = express.Router();
 var PORT = process.env.PORT || 3000;
-
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/webscraper"
 
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -19,7 +19,7 @@ app.set("view engine", "handlebars");
 
 
 mongoose.Promise = Promise;
-mongoose.connect('mongodb://localhost/webscraper',{
+mongoose.connect(MONGODB_URI,{
   useMongoClient: true
 });
 
