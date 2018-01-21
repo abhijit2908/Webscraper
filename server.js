@@ -27,7 +27,7 @@ mongoose.connect('mongodb://localhost/webscraper',{
 });
 
 
-app.post("/scrape",function(req,res){
+app.get("/scrape",function(req,res){
 
   request("https://www.marketwatch.com/",function(err,response,html) {
 
@@ -57,6 +57,7 @@ app.post("/scrape",function(req,res){
  
 })
 
+res.redirect("/articles")
 
 })
 
@@ -101,7 +102,7 @@ db.Article
 });
 
 app.get("/savedarticles",function(req,res){
-  db.Article.find({saved:true}).then(function(savedArticle) {
+  db.Article.find({saved:true}).populate("note").then(function(savedArticle) {
      
 
       var savarticleObj = {
@@ -158,7 +159,23 @@ app.post("/createnotes/:id",function(req,res){
 
 })
 
+app.post("/notes/:id", function(req,res){
 
+  console.log(req.params.id);
+  db.Note.findByIdAndRemove({_id: req.params.id}, function (err, deletedNote) {
+
+    if (err) {
+      console.log(err);
+    } else {
+        res.send(deletedNote);
+    }
+  
+
+
+
+  });
+
+})
 
 
 

@@ -1,33 +1,33 @@
 $(function(){
 
-$('body').on("click","#scrape",function(event){
+// $('body').on("click","#scrape",function(event){
 
 
-			$.ajax("/scrape", {
+// 			$.ajax("/scrape", {
 
-			type:"POST"
-			// data:articleObject
+// 			type:"POST"
+// 			// data:articleObject
 
-		}).then(function(){
-				console.log("front end scrape button");
+// 		}).then(function(){
+// 				console.log("front end scrape button");
 					
 
-				//console.log("created new burger");
+// 				//console.log("created new burger");
 				
-			});
-		$.ajax("/articles", {
+// 			});
+// 		$.ajax("/articles", {
 
-							type:"GET",
-		//data:articleObj
+// 							type:"GET",
+// 		//data:articleObj
 
-		 					}).then(function(){
-		// 	console.log("article Scraped")
-		// })
+// 		 					}).then(function(){
+// 		// 	console.log("article Scraped")
+// 		// })
 
-											});
+// 											});
 
-		location.reload();
-})		
+// 		location.reload();
+// })		
 
 $('body').on("click",".save",function(event){
 
@@ -76,18 +76,25 @@ location.reload();
 
 
 
+$('body').on('click', ".toDelete", function(){
+
+		var notesId = $(this).attr('data-id');
+		console.log(notesId)
+
+		$.ajax("/notes/" + notesId,{
+
+			method: "POST"
+		}).then(function(data){
+			console.log(data);
+		});
+
+		location.reload();
 
 
 
+	})
 
-$('#create-user').on('show.bs.modal', function (event) {
-  var button = $(event.relatedTarget) // Button that triggered the modal
-  var articleId = button.data('id')
 
-  //console.log(articleId)
-$("#submitNote").attr("data-id",articleId)
-
-});
 
 
 $('body').on("click","#submitNote",function(event){
@@ -97,7 +104,7 @@ $('body').on("click","#submitNote",function(event){
 	var noteId = $(this).attr("data-id")
 	//console.log(noteId)
 	//console.log(articleId);
-	var note = $('#articleNote').val();
+	var note = $('#articleNote'+noteId).val();
 	
 	$.ajax("/createnotes/" + noteId, {
 

@@ -4,28 +4,37 @@
 <h1>MarketWatch - Webscraper</h1>
 </div>
 
-<div class = "row">
-	<button type="button" class="btn btn-danger" id="scrape" href="/scrape">Scrape</button>
-	<button type="button" class="btn btn-primary" id="saved" href="/savedarticles">Saved Articles</button>
+<div class = "row main-btn">
+	
+	<form method='get' action='/scrape' >
+	<button type="submit" class="btn btn-danger btn-space col-md-2" id="scrape">Scrape</button>
+	</form>
+	<form method='get' action='/savedArticles'>
+	<button type="submit" class="btn btn-primary btn-space col-md-2" id="saved">Saved Articles</button>
+</form>
 
 </div>
 
 
 <div class= "row">
 <div id = "articles">
-	<ul>
+	
 		{{#each articles}}
 		<div class="row">
-			<li>
-			<div class="article">
-				<a href={{this.link}}>{{this.title}}
+		
+			<div class="article panel-default">
+				<a class="test panel-heading col-md-6" href={{this.link}}>{{this.title}}
 				</a>
-				<button type="button" class="btn btn-primary save" data-id="{{this._id}}">{{#unless this.saved}}Save Article{{/unless}}{{#if this.saved}}Saved Article{{/if}} </button>
+				{{#unless this.saved}}
+				<button type="button" class="btn btn-primary btn-space save col-md-2" data-id="{{this._id}}">Save Article </button>{{/unless}}
+				{{#if this.saved}}
+				<div class="alert alert-success col-md-2 text-center">Saved Article</div>
+				{{/if}} 
 			</div>
-			</li>
+			
 		</div>
 		{{/each}}
-	</ul>
+
 </div>
 </div>
 
