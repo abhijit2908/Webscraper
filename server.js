@@ -4,12 +4,9 @@ var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
 var request = require("request");
 var exphbs = require("express-handlebars");
-
 var db = require('./models');
-
 var app = express();
 var router = express.Router();
-
 var PORT = process.env.PORT || 3000;
 
 
@@ -26,6 +23,10 @@ mongoose.connect('mongodb://localhost/webscraper',{
   useMongoClient: true
 });
 
+
+
+
+//Scraping the website
 
 app.get("/scrape",function(req,res){
 
@@ -61,6 +62,9 @@ res.redirect("/articles")
 
 })
 
+
+//Default home page
+
 app.get("/",function(req,res){
 
   res.render("index");
@@ -69,11 +73,15 @@ app.get("/",function(req,res){
 })
 
 
+
+
+// Retrieving Scraped articles from DB
+
 app.get("/articles",function(req,res){
 
    db.Article.find({
   }).then(function(dbArticle) {
-      // res.json(dbArticle);
+
       var articleObj = {
         articles : dbArticle
       }
@@ -85,6 +93,10 @@ app.get("/articles",function(req,res){
 
 })
 
+
+
+
+//Saving and unsaving articles
 
 app.post("/articles/:id",function(req,res){
 console.log(req.body);
@@ -101,6 +113,10 @@ db.Article
   });
 });
 
+
+
+//Retreiving saved articles
+
 app.get("/savedarticles",function(req,res){
   db.Article.find({saved:true}).populate("note").then(function(savedArticle) {
      
@@ -116,30 +132,34 @@ app.get("/savedarticles",function(req,res){
   });
 });
 
-app.get("/createnotes/:id",function(req,res){
-  console.log(req.params.id)
-  db.Article
- .findOne({ _id: req.params.id })
-   // ..and populate all of the notes associated with it
-   .populate('note')
-   .then(function(dbArticle) {
-     // If we were able to successfully find an Article with the given id, send it back to the client
-     res.json(dbArticle);
-
-         //res.render('saved',dbArticle);
- })
-   .catch(function(err) {
-     // If an error occurred, send it to the client
-     res.json(err);
- });
-});
 
 
 
+// app.get("/createnotes/:id",function(req,res){
+//   console.log(req.params.id)
+//   db.Article
+//  .findOne({ _id: req.params.id })
+//    // ..and populate all of the notes associated with it
+//    .populate('note')
+//    .then(function(dbArticle) {
+//      // If we were able to successfully find an Article with the given id, send it back to the client
+//      res.json(dbArticle);
+
+//          //res.render('saved',dbArticle);
+//  })
+//    .catch(function(err) {
+//      // If an error occurred, send it to the client
+//      res.json(err);
+//  });
+// });
 
 
 
 
+
+
+
+//Creating notes for articles
 
 app.post("/createnotes/:id",function(req,res){
   console.log(req.body)
@@ -158,6 +178,10 @@ app.post("/createnotes/:id",function(req,res){
   });
 
 })
+
+
+
+// Removing notes from articles. 
 
 app.post("/notes/:id", function(req,res){
 
