@@ -48,6 +48,8 @@ app.get("/scrape",function(req,res){
    db.Article
    .create(result)
    .then(function(dbArticle) {
+    res.redirect("/articles")
+
 
    })
    .catch(function(err) {
@@ -58,7 +60,7 @@ app.get("/scrape",function(req,res){
  
 })
 
-res.redirect("/articles")
+//res.redirect("/articles")
 
 })
 
