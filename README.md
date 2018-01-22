@@ -40,7 +40,7 @@ WebScraper app is hosted at: https://polar-mountain-58973.herokuapp.com/
 
 6. The user can delete articles from saved articles.
 
-![Alt Text](public/assets/img/deletedArticles_9.PNG)
+![Alt Text](public/assets/img/deleteArticles_9.PNG)
 
 7. The user can go back to scraped articles using back to scraped articles button.
 
